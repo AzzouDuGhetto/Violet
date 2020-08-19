@@ -40,7 +40,6 @@ NSString* controlCenterModuleArtworkBlurMode = @"0";
 NSString* controlCenterModuleArtworkBlurAmountValue = @"1.0";
 NSString* controlCenterModuleArtworkOpacityValue = @"1.0";
 NSString* controlCenterModuleArtworkDimValue = @"1.0";
-NSString* controlCenterModuleArtworkCornerRadiusValue = @"20.0";
 
 // Lockscreen
 
@@ -338,7 +337,7 @@ NSString* controlCenterModuleArtworkCornerRadiusValue = @"20.0";
 		[ccmArtworkBackgroundImageView setHidden:NO];
 		[ccmArtworkBackgroundImageView setClipsToBounds:YES];
 		[ccmArtworkBackgroundImageView setAlpha:[controlCenterModuleArtworkOpacityValue doubleValue]];
-		[[ccmArtworkBackgroundImageView layer] setCornerRadius:[controlCenterModuleArtworkCornerRadiusValue doubleValue]];
+		[[ccmArtworkBackgroundImageView layer] setCornerRadius:[[self moduleContentView] compactContinuousCornerRadius]];
 		[ccmArtworkBackgroundImageView setImage:currentArtwork];
 
 		if ([controlCenterModuleArtworkBlurMode intValue] != 0) {
@@ -349,7 +348,7 @@ NSString* controlCenterModuleArtworkCornerRadiusValue = @"20.0";
 					ccmBlur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
 				else if ([controlCenterModuleArtworkBlurMode intValue] == 3)
 					ccmBlur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleRegular];
-				ccmBlurView = [[UIVisualEffectView alloc] initWithEffect:lsBlur];
+				ccmBlurView = [[UIVisualEffectView alloc] initWithEffect:ccmBlur];
 				[ccmBlurView setFrame:[ccmArtworkBackgroundImageView bounds]];
 				[ccmBlurView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
 				[ccmBlurView setClipsToBounds:YES];
@@ -555,7 +554,6 @@ NSString* controlCenterModuleArtworkCornerRadiusValue = @"20.0";
 		[preferences registerObject:&controlCenterModuleArtworkBlurAmountValue default:@"1.0" forKey:@"controlCenterModuleArtworkBlurAmount"];
 		[preferences registerObject:&controlCenterModuleArtworkOpacityValue default:@"1.0" forKey:@"controlCenterModuleArtworkOpacity"];
 		[preferences registerObject:&controlCenterModuleArtworkDimValue default:@"0.0" forKey:@"controlCenterModuleArtworkDim"];
-		[preferences registerObject:&controlCenterModuleArtworkCornerRadiusValue default:@"20.0" forKey:@"controlCenterModuleArtworkCornerRadius"];
 	}
 
 	if (enabled) {

@@ -62,8 +62,13 @@ UIView* ccmDimView;
 @interface CCUIModularControlCenterOverlayViewController : UIViewController
 @end
 
+@interface CCUIContentModuleContentContainerView : UIView
+@property(assign, nonatomic)double compactContinuousCornerRadius;
+@end
+
 @interface CCUIContentModuleContainerViewController : UIViewController
 @property(nonatomic, retain)UIViewController* contentViewController;
+@property(nonatomic, readonly)CCUIContentModuleContentContainerView* moduleContentView;
 - (NSString *)moduleIdentifier;
 @end
 
