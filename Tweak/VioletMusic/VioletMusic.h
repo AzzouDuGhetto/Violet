@@ -37,6 +37,7 @@ BOOL hideLyricsButtonSwitch = NO;
 BOOL hideRouteButtonSwitch = NO;
 BOOL hideRouteLabelSwitch = NO;
 BOOL hideQueueButtonSwitch = NO;
+BOOL roundedMiniPlayerCornersSwitch = NO;
 
 @interface MusicNowPlayingControlsViewController : UIViewController
 - (void)setArtwork;
@@ -58,4 +59,7 @@ BOOL hideQueueButtonSwitch = NO;
 @end
 
 @interface MPRouteButton : UIButton
+@end
+
+@interface _TtCC16MusicApplication23PaletteTabBarController23PaletteVisualEffectView : UIView
 @end

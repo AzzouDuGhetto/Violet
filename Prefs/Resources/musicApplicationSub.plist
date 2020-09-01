@@ -5,7 +5,7 @@
 	<key>items</key>
 	<array>
 
-	<dict>
+		<dict>
 			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>label</key>
@@ -361,6 +361,27 @@
 			<string>musicHideQueueButton</string>
 			<key>label</key>
 			<string>Hide Queue Button</string>
+			<key>PostNotification</key>
+			<string>love.litten.violetpreferences/ReloadPrefs</string>
+		</dict>
+
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>Miscellaneous</string>
+		</dict>
+        <dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>love.litten.violetpreferences</string>
+			<key>key</key>
+			<string>roundedMiniPlayerCorners</string>
+			<key>label</key>
+			<string>Rounded Mini Player Corners</string>
 			<key>PostNotification</key>
 			<string>love.litten.violetpreferences/ReloadPrefs</string>
 		</dict>

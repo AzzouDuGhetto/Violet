@@ -3,6 +3,8 @@
 BOOL enabled;
 BOOL enableMusicApplicationSection;
 
+BOOL queueIsVisible = NO;
+
 // Music Application
 
 %group VioletMusic
@@ -12,6 +14,7 @@ BOOL enableMusicApplicationSection;
 %new
 - (void)setArtwork { // get and set the artwork
 
+	if (queueIsVisible) return;
 	MRMediaRemoteGetNowPlayingInfo(dispatch_get_main_queue(), ^(CFDictionaryRef information) {
 		NSDictionary* dict = (__bridge NSDictionary *)information;
 		if (dict) {
@@ -185,6 +188,7 @@ BOOL enableMusicApplicationSection;
 
 	%orig;
 
+	queueIsVisible = YES;
 	[musicArtworkBackgroundImageView setHidden:YES];
 
 }
@@ -193,6 +197,7 @@ BOOL enableMusicApplicationSection;
 
 	%orig;
 
+	queueIsVisible = NO;
 	[musicArtworkBackgroundImageView setHidden:NO];
 
 }
@@ -255,7 +260,7 @@ BOOL enableMusicApplicationSection;
 
 %hook _TtCC16MusicApplication32NowPlayingControlsViewController12VolumeSlider
 
-- (void)didMoveToWindow { // hide volume slider elements
+- (void)didMoveToWindow { // hide volume (slider) elements
 
 	%orig;
 
@@ -272,6 +277,21 @@ BOOL enableMusicApplicationSection;
 
 	if (hideMaxImageSwitch)
 		[maxImage setHidden:YES];
+
+}
+
+%end
+
+%hook _TtCC16MusicApplication23PaletteTabBarController23PaletteVisualEffectView
+
+- (void)didMoveToWindow { // rounded mini player corners
+
+	%orig;
+
+	if (roundedMiniPlayerCornersSwitch) {
+		[self setClipsToBounds:YES];
+		[[self layer] setCornerRadius:10];
+	}
 
 }
 
@@ -308,6 +328,7 @@ BOOL enableMusicApplicationSection;
 	[preferences registerBool:&hideRouteButtonSwitch default:NO forKey:@"musicHideRouteButton"];
 	[preferences registerBool:&hideRouteLabelSwitch default:NO forKey:@"musicHideRouteLabel"];
 	[preferences registerBool:&hideQueueButtonSwitch default:NO forKey:@"musicHideQueueButton"];
+	[preferences registerBool:&roundedMiniPlayerCornersSwitch default:NO forKey:@"roundedMiniPlayerCorners"];
 
 	if (enabled) {
 		if (enableMusicApplicationSection) %init(VioletMusic, QueueViewController=objc_getClass("MusicApplication.NowPlayingQueueViewController"), ArtworkView=objc_getClass("MusicApplication.NowPlayingContentView"), TimeControl=objc_getClass("MusicApplication.PlayerTimeControl"), ContextualActionsButton=objc_getClass("MusicApplication.ContextualActionsButton"), MusicLyricsBackgroundViewX=objc_getClass("MusicApplication.LyricsBackgroundView"));

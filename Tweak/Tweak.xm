@@ -365,7 +365,10 @@ NSString* controlCenterModuleArtworkDimValue = @"1.0";
 			[ccmDimView setClipsToBounds:YES];
 			[ccmDimView setBackgroundColor:[UIColor blackColor]];
 			[ccmDimView setAlpha:[controlCenterModuleArtworkDimValue doubleValue]];
-			[ccmDimView setHidden:NO];
+			if ([[%c(SBMediaController) sharedInstance] isPlaying] || [[%c(SBMediaController) sharedInstance] isPaused])
+				[ccmDimView setHidden:NO];
+			else
+				[ccmDimView setHidden:YES];
 
 			if (![ccmDimView isDescendantOfView:ccmArtworkBackgroundImageView])
 				[ccmArtworkBackgroundImageView addSubview:ccmDimView];
@@ -427,6 +430,7 @@ NSString* controlCenterModuleArtworkDimValue = @"1.0";
 					}
 					if (controlCenterModuleArtworkBackgroundSwitch) {
 						[ccmArtworkBackgroundImageView setImage:currentArtwork];
+						[ccmDimView setHidden:NO];
 					}
 				}
 			}
@@ -446,6 +450,7 @@ NSString* controlCenterModuleArtworkDimValue = @"1.0";
 			[hsArtworkBackgroundImageView setImage:nil];
 			[ccArtworkBackgroundImageView setImage:nil];
 			[ccmArtworkBackgroundImageView setImage:nil];
+			[ccmDimView setHidden:YES];
 		}
   	});
     
