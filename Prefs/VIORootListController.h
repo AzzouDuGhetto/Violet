@@ -5,7 +5,6 @@
 #import <Cephei/HBPreferences.h>
 #import <Cephei/HBRespringController.h>
 #import <spawn.h>
-#import "../Tweak/Violet.h"
 
 @interface VIOAppearanceSettings : HBAppearanceSettings
 @end
@@ -20,7 +19,6 @@
 @property (nonatomic, retain) UIImageView *iconView;
 - (void)toggleState;
 - (void)setEnableSwitchState;
-- (void)setArtwork;
 - (void)resetPrompt;
 - (void)resetPreferences;
 - (void)respring;

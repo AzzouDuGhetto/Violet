@@ -133,6 +133,20 @@
 			<key>PostNotification</key>
 			<string>love.litten.violetpreferences/ReloadPrefs</string>
 		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>love.litten.violetpreferences</string>
+			<key>key</key>
+			<string>lockscreenArtworkBackgroundTransition</string>
+			<key>label</key>
+			<string>Artwork Transition</string>
+			<key>PostNotification</key>
+			<string>love.litten.violetpreferences/ReloadPrefs</string>
+		</dict>
 
 		<dict>
 			<key>cell</key>
@@ -285,6 +299,20 @@
 			<true/>
 			<key>isSegmented</key>
 			<false/>
+			<key>PostNotification</key>
+			<string>love.litten.violetpreferences/ReloadPrefs</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>love.litten.violetpreferences</string>
+			<key>key</key>
+			<string>lockscreenPlayerArtworkBackgroundTransition</string>
+			<key>label</key>
+			<string>Artwork Transition</string>
 			<key>PostNotification</key>
 			<string>love.litten.violetpreferences/ReloadPrefs</string>
 		</dict>

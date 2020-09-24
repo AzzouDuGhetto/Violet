@@ -1,11 +1,10 @@
 #include "VIORootListController.h"
+#import "../Tweak/Violet.h"
 
 BOOL enabled = NO;
 
 UIBlurEffect* blur;
 UIVisualEffectView* blurView;
-UIImage* currentArtwork;
-UIImageView* artworkBackgroundImageView;
 
 @implementation VIORootListController
 
@@ -26,7 +25,7 @@ UIImageView* artworkBackgroundImageView;
         self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0,10,10)];
         self.titleLabel.font = [UIFont boldSystemFontOfSize:17];
         self.titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
-        self.titleLabel.text = @"Violet";
+        self.titleLabel.text = @"1.4";
         self.titleLabel.textColor = [UIColor whiteColor];
         self.titleLabel.textAlignment = NSTextAlignmentCenter;
         [self.navigationItem.titleView addSubview:self.titleLabel];
@@ -100,19 +99,6 @@ UIImageView* artworkBackgroundImageView;
 
     CGRect frame = self.table.bounds;
     frame.origin.y = -frame.size.height;
-
-    for (UIView* subview in [[self view] subviews]) {
-        [subview setBackgroundColor:[UIColor clearColor]];
-	}
-
-    if (!artworkBackgroundImageView) artworkBackgroundImageView = [[UIImageView alloc] initWithFrame:[[self view] bounds]];
-    [artworkBackgroundImageView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
-    [artworkBackgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
-    [artworkBackgroundImageView setHidden:YES];
-    [artworkBackgroundImageView setClipsToBounds:YES];
-    [artworkBackgroundImageView setAlpha:0.4];
-    [[self view] insertSubview:artworkBackgroundImageView atIndex:0];
-    [self setArtwork];
 
     self.navigationController.navigationController.navigationBar.barTintColor = [UIColor colorWithRed: 0.76 green: 0.67 blue: 1.00 alpha: 1.00];
     [self.navigationController.navigationController.navigationBar setShadowImage: [UIImage new]];
@@ -211,26 +197,6 @@ UIImageView* artworkBackgroundImageView;
         [[self enableSwitch] setOn:YES animated:YES];
     else if ([[preferences objectForKey:@"Enabled"] isEqual:@(NO)])
         [[self enableSwitch] setOn:NO animated:YES];
-
-}
-
-- (void)setArtwork {
-
-	MRMediaRemoteGetNowPlayingInfo(dispatch_get_main_queue(), ^(CFDictionaryRef information) {
-		NSDictionary* dict = (__bridge NSDictionary *)information;
-		if (dict) {
-			if (dict[(__bridge NSString *)kMRMediaRemoteNowPlayingInfoArtworkData]) {
-				currentArtwork = [UIImage imageWithData:[dict objectForKey:(__bridge NSString*)kMRMediaRemoteNowPlayingInfoArtworkData]];
-				if (currentArtwork) {
-					[artworkBackgroundImageView setImage:currentArtwork];
-					[artworkBackgroundImageView setHidden:NO];
-				}
-			} else { // no artwork
-				[artworkBackgroundImageView setImage:nil];
-				[artworkBackgroundImageView setHidden:YES];
-			}
-      	}
-  	});
 
 }
 

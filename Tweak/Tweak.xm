@@ -6,42 +6,6 @@ BOOL enableHomescreenSection;
 BOOL enableControlCenterSection;
 
 // Lockscreen
-BOOL lockscreenArtworkBackgroundSwitch = NO;
-NSString* lockscreenArtworkBlurMode = @"0";
-NSString* lockscreenArtworkBlurAmountValue = @"1.0";
-NSString* lockscreenArtworkOpacityValue = @"1.0";
-NSString* lockscreenArtworkDimValue = @"0.0";
-BOOL lockscreenPlayerArtworkBackgroundSwitch = NO;
-NSString* lockscreenPlayerArtworkBlurMode = @"0";
-NSString* lockscreenPlayerArtworkBlurAmountValue = @"1.0";
-NSString* lockscreenPlayerArtworkOpacityValue = @"1.0";
-NSString* lockscreenPlayerArtworkCornerRadiusValue = @"10.0";
-NSString* lockscreenPlayerArtworkDimValue = @"0.0";
-BOOL hideLockscreenPlayerBackgroundSwitch = NO;
-BOOL roundLockScreenCompatibilitySwitch = NO;
-BOOL hideXenHTMLWidgetsSwitch = NO;
-
-// Homescreen
-BOOL homescreenArtworkBackgroundSwitch = NO;
-NSString* homescreenArtworkBlurMode = @"0";
-NSString* homescreenArtworkBlurAmountValue = @"1.0";
-NSString* homescreenArtworkOpacityValue = @"1.0";
-NSString* homescreenArtworkDimValue = @"0.0";
-BOOL zoomedViewSwitch = YES;
-
-// Control Center
-BOOL controlCenterArtworkBackgroundSwitch = NO;
-NSString* controlCenterArtworkBlurMode = @"0";
-NSString* controlCenterArtworkBlurAmountValue = @"1.0";
-NSString* controlCenterArtworkOpacityValue = @"1.0";
-NSString* controlCenterArtworkDimValue = @"1.0";
-BOOL controlCenterModuleArtworkBackgroundSwitch = NO;
-NSString* controlCenterModuleArtworkBlurMode = @"0";
-NSString* controlCenterModuleArtworkBlurAmountValue = @"1.0";
-NSString* controlCenterModuleArtworkOpacityValue = @"1.0";
-NSString* controlCenterModuleArtworkDimValue = @"1.0";
-
-// Lockscreen
 
 %group VioletLockscreen
 
@@ -410,26 +374,56 @@ NSString* controlCenterModuleArtworkDimValue = @"1.0";
 			if (dict[(__bridge NSString *)kMRMediaRemoteNowPlayingInfoArtworkData]) {
 				if (currentArtwork) {
 					if (lockscreenArtworkBackgroundSwitch) {
-						[lsArtworkBackgroundImageView setImage:currentArtwork];
+						if (lockscreenArtworkBackgroundTransitionSwitch) {
+							[UIView transitionWithView:lsArtworkBackgroundImageView duration:0.2 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+								[lsArtworkBackgroundImageView setImage:currentArtwork];
+							} completion:nil];
+						} else {
+							[lsArtworkBackgroundImageView setImage:currentArtwork];
+						}
 						[lsArtworkBackgroundImageView setHidden:NO];
 						if ([lockscreenArtworkBlurMode intValue] != 0) [lsBlurView setHidden:NO];
 					}
 					if (lockscreenPlayerArtworkBackgroundSwitch) {
-						[lspArtworkBackgroundImageView setImage:currentArtwork];
+						if (lockscreenPlayerArtworkBackgroundTransitionSwitch) {
+							[UIView transitionWithView:lspArtworkBackgroundImageView duration:0.2 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+								[lspArtworkBackgroundImageView setImage:currentArtwork];
+							} completion:nil];
+						} else {
+							[lspArtworkBackgroundImageView setImage:currentArtwork];
+						}
 						[lspArtworkBackgroundImageView setHidden:NO];
 						if ([lockscreenPlayerArtworkBlurMode intValue] != 0) [lspBlurView setHidden:NO];
 					}
 					if (homescreenArtworkBackgroundSwitch) {
-						[hsArtworkBackgroundImageView setImage:currentArtwork];
+						if (homescreenArtworkBackgroundTransitionSwitch) {
+							[UIView transitionWithView:hsArtworkBackgroundImageView duration:0.2 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+								[hsArtworkBackgroundImageView setImage:currentArtwork];
+							} completion:nil];
+						} else {
+							[hsArtworkBackgroundImageView setImage:currentArtwork];
+						}
 						[hsArtworkBackgroundImageView setHidden:NO];
 						if ([homescreenArtworkBlurMode intValue] != 0) [hsBlurView setHidden:NO];
 					}
 					if (controlCenterArtworkBackgroundSwitch) {
-						[ccArtworkBackgroundImageView setImage:currentArtwork];
+						if (controlCenterArtworkBackgroundTransitionSwitch) {
+							[UIView transitionWithView:ccArtworkBackgroundImageView duration:0.2 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+								[ccArtworkBackgroundImageView setImage:currentArtwork];
+							} completion:nil];
+						} else {
+							[ccArtworkBackgroundImageView setImage:currentArtwork];
+						}
 						[ccArtworkBackgroundImageView setHidden:NO];
 					}
 					if (controlCenterModuleArtworkBackgroundSwitch) {
-						[ccmArtworkBackgroundImageView setImage:currentArtwork];
+						if (controlCenterModuleArtworkBackgroundTransitionSwitch) {
+							[UIView transitionWithView:ccmArtworkBackgroundImageView duration:0.2 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+								[ccmArtworkBackgroundImageView setImage:currentArtwork];
+							} completion:nil];
+						} else {
+							[ccmArtworkBackgroundImageView setImage:currentArtwork];
+						}
 						[ccmDimView setHidden:NO];
 					}
 				}
@@ -454,6 +448,18 @@ NSString* controlCenterModuleArtworkDimValue = @"1.0";
 		}
   	});
     
+}
+
+%end
+
+%hook SpringBoard
+
+- (void)applicationDidFinishLaunching:(id)arg1 { // reload data after respring
+
+	%orig;
+
+	[[%c(SBMediaController) sharedInstance] setNowPlayingInfo:0];
+
 }
 
 %end
@@ -526,12 +532,14 @@ NSString* controlCenterModuleArtworkDimValue = @"1.0";
 		[preferences registerObject:&lockscreenArtworkBlurAmountValue default:@"1.0" forKey:@"lockscreenArtworkBlurAmount"];
 		[preferences registerObject:&lockscreenArtworkOpacityValue default:@"1.0" forKey:@"lockscreenArtworkOpacity"];
 		[preferences registerObject:&lockscreenArtworkDimValue default:@"0.0" forKey:@"lockscreenArtworkDim"];
+		[preferences registerBool:&lockscreenArtworkBackgroundTransitionSwitch default:NO forKey:@"lockscreenArtworkBackgroundTransition"];
 		[preferences registerBool:&lockscreenPlayerArtworkBackgroundSwitch default:NO forKey:@"lockscreenPlayerArtworkBackground"];
 		[preferences registerObject:&lockscreenPlayerArtworkBlurMode default:@"0" forKey:@"lockscreenPlayerArtworkBlur"];
 		[preferences registerObject:&lockscreenPlayerArtworkBlurAmountValue default:@"1.0" forKey:@"lockscreenPlayerArtworkBlurAmount"];
 		[preferences registerObject:&lockscreenPlayerArtworkOpacityValue default:@"1.0" forKey:@"lockscreenPlayerArtworkOpacity"];
 		[preferences registerObject:&lockscreenPlayerArtworkCornerRadiusValue default:@"10.0" forKey:@"lockscreenPlayerArtworkCornerRadius"];
 		[preferences registerObject:&lockscreenPlayerArtworkDimValue default:@"0.0" forKey:@"lockscreenPlayerArtworkDim"];
+		[preferences registerBool:&lockscreenPlayerArtworkBackgroundTransitionSwitch default:NO forKey:@"lockscreenPlayerArtworkBackgroundTransition"];
 		[preferences registerBool:&hideLockscreenPlayerBackgroundSwitch default:NO forKey:@"hideLockscreenPlayerBackground"];
 		[preferences registerBool:&roundLockScreenCompatibilitySwitch default:NO forKey:@"roundLockScreenCompatibility"];
 		[preferences registerBool:&hideXenHTMLWidgetsSwitch default:NO forKey:@"hideXenHTMLWidgets"];
@@ -544,6 +552,7 @@ NSString* controlCenterModuleArtworkDimValue = @"1.0";
 		[preferences registerObject:&homescreenArtworkBlurAmountValue default:@"1.0" forKey:@"homescreenArtworkBlurAmount"];
 		[preferences registerObject:&homescreenArtworkOpacityValue default:@"1.0" forKey:@"homescreenArtworkOpacity"];
 		[preferences registerObject:&homescreenArtworkDimValue default:@"0.0" forKey:@"homescreenArtworkDim"];
+		[preferences registerBool:&homescreenArtworkBackgroundTransitionSwitch default:NO forKey:@"homescreenArtworkBackgroundTransition"];
 		[preferences registerBool:&zoomedViewSwitch default:YES forKey:@"zoomedView"];
 	}
 
@@ -554,11 +563,13 @@ NSString* controlCenterModuleArtworkDimValue = @"1.0";
 		[preferences registerObject:&controlCenterArtworkBlurAmountValue default:@"1.0" forKey:@"controlCenterArtworkBlurAmount"];
 		[preferences registerObject:&controlCenterArtworkOpacityValue default:@"1.0" forKey:@"controlCenterArtworkOpacity"];
 		[preferences registerObject:&controlCenterArtworkDimValue default:@"0.0" forKey:@"controlCenterArtworkDim"];
+		[preferences registerBool:&controlCenterArtworkBackgroundTransitionSwitch default:NO forKey:@"controlCenterArtworkBackgroundTransition"];
 		[preferences registerBool:&controlCenterModuleArtworkBackgroundSwitch default:NO forKey:@"controlCenterModuleArtworkBackground"];
 		[preferences registerObject:&controlCenterModuleArtworkBlurMode default:@"0" forKey:@"controlCenterModuleArtworkBlur"];
 		[preferences registerObject:&controlCenterModuleArtworkBlurAmountValue default:@"1.0" forKey:@"controlCenterModuleArtworkBlurAmount"];
 		[preferences registerObject:&controlCenterModuleArtworkOpacityValue default:@"1.0" forKey:@"controlCenterModuleArtworkOpacity"];
 		[preferences registerObject:&controlCenterModuleArtworkDimValue default:@"0.0" forKey:@"controlCenterModuleArtworkDim"];
+		[preferences registerBool:&controlCenterModuleArtworkBackgroundTransitionSwitch default:NO forKey:@"controlCenterModuleArtworkBackgroundTransition"];
 	}
 
 	if (enabled) {

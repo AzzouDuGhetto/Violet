@@ -2,6 +2,8 @@
 #import <Cephei/HBPreferences.h>
 #import <MediaRemote/MediaRemote.h>
 
+#define SYSTEM_VERSION_LESS_THAN(v) ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
+
 HBPreferences* preferences;
 
 extern BOOL enabled;
