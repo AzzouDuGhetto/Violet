@@ -295,52 +295,51 @@ BOOL enableControlCenterSection;
 	%orig;
 	
 	if (!controlCenterModuleArtworkBackgroundSwitch) return;
-	if ([[self moduleIdentifier] isEqual:@"com.apple.mediaremote.controlcenter.nowplaying"]) {
-		if (!ccmArtworkBackgroundImageView) ccmArtworkBackgroundImageView = [[UIImageView alloc] initWithFrame:[[[self contentViewController] view] bounds]];
-		[ccmArtworkBackgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
-		[ccmArtworkBackgroundImageView setHidden:NO];
-		[ccmArtworkBackgroundImageView setClipsToBounds:YES];
-		[ccmArtworkBackgroundImageView setAlpha:[controlCenterModuleArtworkOpacityValue doubleValue]];
-		[[ccmArtworkBackgroundImageView layer] setCornerRadius:[[self moduleContentView] compactContinuousCornerRadius]];
-		[ccmArtworkBackgroundImageView setImage:currentArtwork];
+	if (![[self moduleIdentifier] isEqual:@"com.apple.mediaremote.controlcenter.nowplaying"]) return;
+	if (!ccmArtworkBackgroundImageView) ccmArtworkBackgroundImageView = [[UIImageView alloc] initWithFrame:[[[self contentViewController] view] bounds]];
+	[ccmArtworkBackgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
+	[ccmArtworkBackgroundImageView setHidden:NO];
+	[ccmArtworkBackgroundImageView setClipsToBounds:YES];
+	[ccmArtworkBackgroundImageView setAlpha:[controlCenterModuleArtworkOpacityValue doubleValue]];
+	[[ccmArtworkBackgroundImageView layer] setCornerRadius:[[self moduleContentView] compactContinuousCornerRadius]];
+	[ccmArtworkBackgroundImageView setImage:currentArtwork];
 
-		if ([controlCenterModuleArtworkBlurMode intValue] != 0) {
-			if (!ccmBlur) {
-				if ([controlCenterModuleArtworkBlurMode intValue] == 1)
-					ccmBlur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
-				else if ([controlCenterModuleArtworkBlurMode intValue] == 2)
-					ccmBlur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
-				else if ([controlCenterModuleArtworkBlurMode intValue] == 3)
-					ccmBlur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleRegular];
-				ccmBlurView = [[UIVisualEffectView alloc] initWithEffect:ccmBlur];
-				[ccmBlurView setFrame:[ccmArtworkBackgroundImageView bounds]];
-				[ccmBlurView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
-				[ccmBlurView setClipsToBounds:YES];
-				[ccmBlurView setAlpha:[controlCenterModuleArtworkBlurAmountValue doubleValue]];
-				[ccmArtworkBackgroundImageView addSubview:ccmBlurView];
-			}
-			[ccmBlurView setHidden:NO];
+	if ([controlCenterModuleArtworkBlurMode intValue] != 0) {
+		if (!ccmBlur) {
+			if ([controlCenterModuleArtworkBlurMode intValue] == 1)
+				ccmBlur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+			else if ([controlCenterModuleArtworkBlurMode intValue] == 2)
+				ccmBlur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+			else if ([controlCenterModuleArtworkBlurMode intValue] == 3)
+				ccmBlur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleRegular];
+			ccmBlurView = [[UIVisualEffectView alloc] initWithEffect:ccmBlur];
+			[ccmBlurView setFrame:[ccmArtworkBackgroundImageView bounds]];
+			[ccmBlurView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+			[ccmBlurView setClipsToBounds:YES];
+			[ccmBlurView setAlpha:[controlCenterModuleArtworkBlurAmountValue doubleValue]];
+			[ccmArtworkBackgroundImageView addSubview:ccmBlurView];
 		}
-
-		if ([controlCenterModuleArtworkDimValue doubleValue] != 0.0) {
-			if (!ccmDimView) ccmDimView = [[UIView alloc] init];
-			[ccmDimView setFrame:[ccmArtworkBackgroundImageView bounds]];
-			[ccmDimView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
-			[ccmDimView setClipsToBounds:YES];
-			[ccmDimView setBackgroundColor:[UIColor blackColor]];
-			[ccmDimView setAlpha:[controlCenterModuleArtworkDimValue doubleValue]];
-			if ([[%c(SBMediaController) sharedInstance] isPlaying] || [[%c(SBMediaController) sharedInstance] isPaused])
-				[ccmDimView setHidden:NO];
-			else
-				[ccmDimView setHidden:YES];
-
-			if (![ccmDimView isDescendantOfView:ccmArtworkBackgroundImageView])
-				[ccmArtworkBackgroundImageView addSubview:ccmDimView];
-		}
-
-		if (![ccmArtworkBackgroundImageView isDescendantOfView:[self view]])
-			[[self view] insertSubview:ccmArtworkBackgroundImageView atIndex:0];
+		[ccmBlurView setHidden:NO];
 	}
+
+	if ([controlCenterModuleArtworkDimValue doubleValue] != 0.0) {
+		if (!ccmDimView) ccmDimView = [[UIView alloc] init];
+		[ccmDimView setFrame:[ccmArtworkBackgroundImageView bounds]];
+		[ccmDimView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+		[ccmDimView setClipsToBounds:YES];
+		[ccmDimView setBackgroundColor:[UIColor blackColor]];
+		[ccmDimView setAlpha:[controlCenterModuleArtworkDimValue doubleValue]];
+		if ([[%c(SBMediaController) sharedInstance] isPlaying] || [[%c(SBMediaController) sharedInstance] isPaused])
+			[ccmDimView setHidden:NO];
+		else
+			[ccmDimView setHidden:YES];
+
+		if (![ccmDimView isDescendantOfView:ccmArtworkBackgroundImageView])
+			[ccmArtworkBackgroundImageView addSubview:ccmDimView];
+	}
+
+	if (![ccmArtworkBackgroundImageView isDescendantOfView:[self view]])
+		[[self view] insertSubview:ccmArtworkBackgroundImageView atIndex:0];
 
 }
 

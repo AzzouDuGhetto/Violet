@@ -299,12 +299,6 @@ BOOL queueIsVisible = NO;
 
 %end
 
-%group VioletMusic14
-
-
-
-%end
-
 %ctor {
 
 	preferences = [[HBPreferences alloc] initWithIdentifier:@"love.litten.violetpreferences"];
@@ -337,8 +331,7 @@ BOOL queueIsVisible = NO;
 	[preferences registerBool:&roundedMiniPlayerCornersSwitch default:NO forKey:@"roundedMiniPlayerCorners"];
 
 	if (enabled) {
-		if (SYSTEM_VERSION_LESS_THAN(@"14.0") && enableMusicApplicationSection) %init(VioletMusic, QueueViewController=objc_getClass("MusicApplication.NowPlayingQueueViewController"), ArtworkView=objc_getClass("MusicApplication.NowPlayingContentView"), TimeControl=objc_getClass("MusicApplication.PlayerTimeControl"), ContextualActionsButton=objc_getClass("MusicApplication.ContextualActionsButton"), MusicLyricsBackgroundViewX=objc_getClass("MusicApplication.LyricsBackgroundView"));
-		if (!SYSTEM_VERSION_LESS_THAN(@"14.0")) %init(VioletMusic14);
+		if (enableMusicApplicationSection) %init(VioletMusic, QueueViewController=objc_getClass("MusicApplication.NowPlayingQueueViewController"), ArtworkView=objc_getClass("MusicApplication.NowPlayingContentView"), TimeControl=objc_getClass("MusicApplication.PlayerTimeControl"), ContextualActionsButton=objc_getClass("MusicApplication.ContextualActionsButton"), MusicLyricsBackgroundViewX=objc_getClass("MusicApplication.LyricsBackgroundView"));
 		return;
     }
 
