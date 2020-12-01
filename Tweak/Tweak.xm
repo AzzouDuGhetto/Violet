@@ -76,10 +76,12 @@ BOOL enableControlCenterSection;
 		}
 
 		if (!lockscreenPlayerArtworkBackgroundSwitch) return;
-		if (currentArtwork)
-			[self clearMaterialViewBackground];
-		else
-			[self setMaterialViewBackground];
+		if (hideLockscreenPlayerBackgroundSwitch) {
+			if (currentArtwork)
+				[self clearMaterialViewBackground];
+			else
+				[self setMaterialViewBackground];
+		}
 		if (!lspArtworkBackgroundImageView) {
 			lspArtworkBackgroundImageView = [[UIImageView alloc] init];
 			[lspArtworkBackgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
@@ -122,8 +124,11 @@ BOOL enableControlCenterSection;
 				[lspArtworkBackgroundImageView addSubview:lspDimView];
 		}
 
-		if (![lspArtworkBackgroundImageView isDescendantOfView:AdjunctItemView])
-			[AdjunctItemView insertSubview:lspArtworkBackgroundImageView atIndex:0];		
+		if (hideLockscreenPlayerBackgroundSwitch) {
+			if (![lspArtworkBackgroundImageView isDescendantOfView:AdjunctItemView]) [AdjunctItemView insertSubview:lspArtworkBackgroundImageView atIndex:0];
+		} else {
+			if (![lspArtworkBackgroundImageView isDescendantOfView:AdjunctItemView]) [AdjunctItemView insertSubview:lspArtworkBackgroundImageView atIndex:1];
+		}
 	}
 }
 
@@ -132,6 +137,7 @@ BOOL enableControlCenterSection;
 	%orig;
 
 	if ([[self label] isEqualToString:@"MRPlatter-CoverSheet"] && [[self traitCollection] userInterfaceStyle] != [previousTraitCollection userInterfaceStyle]) {
+		if (!hideLockscreenPlayerBackgroundSwitch) return;
 		if (currentArtwork) [self performSelector:@selector(clearMaterialViewBackground) withObject:nil afterDelay:0.2];
 		else [self performSelector:@selector(setMaterialViewBackground) withObject:nil afterDelay:0.2];
 	}
@@ -162,6 +168,19 @@ BOOL enableControlCenterSection;
 	MTMaterialLayer* MTLayer = (MTMaterialLayer *)[MTView layer];
 	[MTLayer setScale:1];
 	[MTLayer mt_setColorMatrixDrivenOpacity:1 removingIfIdentity:false];
+
+}
+
+%end
+
+%hook XENHWidgetLayerContainerView
+
+- (void)didMoveToWindow { // hide xen html widgets
+
+	%orig;
+
+	if (hideXenHTMLWidgetsSwitch && ([[%c(SBMediaController) sharedInstance] isPlaying] || [[%c(SBMediaController) sharedInstance] isPaused]))
+		[self setHidden:YES];
 
 }
 
@@ -465,56 +484,6 @@ BOOL enableControlCenterSection;
 
 %end
 
-// Tweak Compatibility
-
-%group TweakCompatibility
-
-%hook CSCoverSheetViewController
-
-- (void)viewWillAppear:(BOOL)animated { // roundlockscreen compatibility
-
-	%orig;
-
-	if (roundLockScreenCompatibilitySwitch && [[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/RoundLockScreen.dylib"])
-		[[lsArtworkBackgroundImageView layer] setCornerRadius:38];
-
-}
-
-- (void)viewWillDisappear:(BOOL)animated { // roundlockscreen compatibility
-
-	%orig;
-
-	if (roundLockScreenCompatibilitySwitch && [[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/RoundLockScreen.dylib"])
-		[[lsArtworkBackgroundImageView layer] setCornerRadius:38];
-
-}
-
-- (void)viewDidAppear:(BOOL)animated { // roundlockscreen compatibility
-
-	%orig;
-
-	if (roundLockScreenCompatibilitySwitch && [[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/RoundLockScreen.dylib"])
-		[[lsArtworkBackgroundImageView layer] setCornerRadius:0];
-
-}
-
-%end
-
-%hook XENHWidgetLayerContainerView
-
-- (void)didMoveToWindow { // hide xen html widgets
-
-	%orig;
-
-	if (hideXenHTMLWidgetsSwitch && ([[%c(SBMediaController) sharedInstance] isPlaying] || [[%c(SBMediaController) sharedInstance] isPaused]))
-		[self setHidden:YES];
-
-}
-
-%end
-
-%end
-
 %ctor {
 
 	preferences = [[HBPreferences alloc] initWithIdentifier:@"love.litten.violetpreferences"];
@@ -540,7 +509,6 @@ BOOL enableControlCenterSection;
 		[preferences registerObject:&lockscreenPlayerArtworkDimValue default:@"0.0" forKey:@"lockscreenPlayerArtworkDim"];
 		[preferences registerBool:&lockscreenPlayerArtworkBackgroundTransitionSwitch default:NO forKey:@"lockscreenPlayerArtworkBackgroundTransition"];
 		[preferences registerBool:&hideLockscreenPlayerBackgroundSwitch default:NO forKey:@"hideLockscreenPlayerBackground"];
-		[preferences registerBool:&roundLockScreenCompatibilitySwitch default:NO forKey:@"roundLockScreenCompatibility"];
 		[preferences registerBool:&hideXenHTMLWidgetsSwitch default:NO forKey:@"hideXenHTMLWidgets"];
 	}
 
@@ -576,7 +544,6 @@ BOOL enableControlCenterSection;
 		if (enableHomescreenSection) %init(VioletHomescreen);
 		if (enableControlCenterSection) %init(ControlCenter);
 		%init(VioletSpringBoardData);
-		if (roundLockScreenCompatibilitySwitch || hideXenHTMLWidgetsSwitch) %init(TweakCompatibility);
         return;
     }
 

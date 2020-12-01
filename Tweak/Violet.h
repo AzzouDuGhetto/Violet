@@ -47,7 +47,6 @@ NSString* lockscreenPlayerArtworkCornerRadiusValue = @"10.0";
 NSString* lockscreenPlayerArtworkDimValue = @"0.0";
 BOOL lockscreenPlayerArtworkBackgroundTransitionSwitch = NO;
 BOOL hideLockscreenPlayerBackgroundSwitch = NO;
-BOOL roundLockScreenCompatibilitySwitch = NO;
 BOOL hideXenHTMLWidgetsSwitch = NO;
 
 // Homescreen
