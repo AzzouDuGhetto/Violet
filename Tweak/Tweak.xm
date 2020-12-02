@@ -70,13 +70,13 @@ BOOL enableControlCenterSection;
 	if ([[self label] isEqualToString:@"MRPlatter-CoverSheet"]) {
 		UIView* AdjunctItemView = [[[[[self view] superview] superview] superview] superview];
 
-		if (hideLockscreenPlayerBackgroundSwitch) {
+		if (hideLockscreenPlayerBackgroundSwitch || [[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/Sylph.dylib"]) {
 			UIView* platterView = MSHookIvar<UIView *>(AdjunctItemView, "_platterView");
 			[[platterView backgroundMaterialView] setHidden:YES];
 		}
 
 		if (!lockscreenPlayerArtworkBackgroundSwitch) return;
-		if (hideLockscreenPlayerBackgroundSwitch) {
+		if (hideLockscreenPlayerBackgroundSwitch || [[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/Sylph.dylib"]) {
 			if (currentArtwork)
 				[self clearMaterialViewBackground];
 			else
@@ -124,7 +124,7 @@ BOOL enableControlCenterSection;
 				[lspArtworkBackgroundImageView addSubview:lspDimView];
 		}
 
-		if (hideLockscreenPlayerBackgroundSwitch) {
+		if (hideLockscreenPlayerBackgroundSwitch || [[NSFileManager defaultManager] fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/Sylph.dylib"]) {
 			if (![lspArtworkBackgroundImageView isDescendantOfView:AdjunctItemView]) [AdjunctItemView insertSubview:lspArtworkBackgroundImageView atIndex:0];
 		} else {
 			if (![lspArtworkBackgroundImageView isDescendantOfView:AdjunctItemView]) [AdjunctItemView insertSubview:lspArtworkBackgroundImageView atIndex:1];
