@@ -1,6 +1,9 @@
 #import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 #import <Cephei/HBPreferences.h>
 #import <MediaRemote/MediaRemote.h>
+
+#define SYSTEM_VERSION_LESS_THAN(v) ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
 
 HBPreferences* preferences;
 
@@ -37,6 +40,7 @@ BOOL hideLyricsButtonSwitch = NO;
 BOOL hideRouteButtonSwitch = NO;
 BOOL hideRouteLabelSwitch = NO;
 BOOL hideQueueButtonSwitch = NO;
+BOOL hideQueueModeBadgeSwitch = NO;
 BOOL roundedMiniPlayerCornersSwitch = NO;
 
 @interface MusicNowPlayingControlsViewController : UIViewController
@@ -56,6 +60,9 @@ BOOL roundedMiniPlayerCornersSwitch = NO;
 @end
 
 @interface _TtCC16MusicApplication32NowPlayingControlsViewController12VolumeSlider : UISlider
+@end
+
+@interface _UISlideriOSVisualElement : UIView
 @end
 
 @interface MPRouteButton : UIButton

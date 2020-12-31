@@ -124,7 +124,7 @@ BOOL enableControlCenterSection;
 				[lspArtworkBackgroundImageView addSubview:lspDimView];
 		}
 
-		if (![lspArtworkBackgroundImageView isDescendantOfView:AdjunctItemView]) [AdjunctItemView insertSubview:lspArtworkBackgroundImageView atIndex:0];
+		if (![lspArtworkBackgroundImageView isDescendantOfView:AdjunctItemView]) [AdjunctItemView addSubview:lspArtworkBackgroundImageView];
 	}
 }
 
@@ -317,6 +317,7 @@ BOOL enableControlCenterSection;
 	[ccmArtworkBackgroundImageView setClipsToBounds:YES];
 	[ccmArtworkBackgroundImageView setAlpha:[controlCenterModuleArtworkOpacityValue doubleValue]];
 	[[ccmArtworkBackgroundImageView layer] setCornerRadius:[[self moduleContentView] compactContinuousCornerRadius]];
+	[[ccmArtworkBackgroundImageView layer] setCornerCurve:kCACornerCurveContinuous];
 	[ccmArtworkBackgroundImageView setImage:currentArtwork];
 
 	if ([controlCenterModuleArtworkBlurMode intValue] != 0) {
@@ -501,7 +502,7 @@ BOOL enableControlCenterSection;
 		[preferences registerObject:&lockscreenPlayerArtworkBlurMode default:@"0" forKey:@"lockscreenPlayerArtworkBlur"];
 		[preferences registerObject:&lockscreenPlayerArtworkBlurAmountValue default:@"1.0" forKey:@"lockscreenPlayerArtworkBlurAmount"];
 		[preferences registerObject:&lockscreenPlayerArtworkOpacityValue default:@"1.0" forKey:@"lockscreenPlayerArtworkOpacity"];
-		[preferences registerObject:&lockscreenPlayerArtworkCornerRadiusValue default:@"10.0" forKey:@"lockscreenPlayerArtworkCornerRadius"];
+		[preferences registerObject:&lockscreenPlayerArtworkCornerRadiusValue default:@"13.0" forKey:@"lockscreenPlayerArtworkCornerRadius"];
 		[preferences registerObject:&lockscreenPlayerArtworkDimValue default:@"0.0" forKey:@"lockscreenPlayerArtworkDim"];
 		[preferences registerBool:&lockscreenPlayerArtworkBackgroundTransitionSwitch default:NO forKey:@"lockscreenPlayerArtworkBackgroundTransition"];
 		[preferences registerBool:&hideLockscreenPlayerBackgroundSwitch default:NO forKey:@"hideLockscreenPlayerBackground"];

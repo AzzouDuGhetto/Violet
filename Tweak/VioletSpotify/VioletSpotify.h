@@ -1,6 +1,7 @@
 #import <UIKit/UIKit.h>
 #import <Cephei/HBPreferences.h>
 #import <MediaRemote/MediaRemote.h>
+#import <Foundation/Foundation.h>
 
 HBPreferences* preferences;
 

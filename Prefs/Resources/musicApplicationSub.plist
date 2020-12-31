@@ -139,6 +139,10 @@
 			<string>PSGroupCell</string>
 			<key>label</key>
 			<string>Hiding - Now Playing</string>
+			<key>footerText</key>
+			<string>Hiding Volume Slider Images Does Not Support iOS 14</string>
+			<key>isStaticText</key>
+			<true/>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -364,12 +368,30 @@
 			<key>PostNotification</key>
 			<string>love.litten.violetpreferences/ReloadPrefs</string>
 		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>love.litten.violetpreferences</string>
+			<key>key</key>
+			<string>musicHideQueueModeBadge</string>
+			<key>label</key>
+			<string>Hide Queue Mode Badge</string>
+			<key>PostNotification</key>
+			<string>love.litten.violetpreferences/ReloadPrefs</string>
+		</dict>
 
 		<dict>
 			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>label</key>
 			<string>Miscellaneous</string>
+			<key>footerText</key>
+			<string>iOS 13 Only</string>
+			<key>isStaticText</key>
+			<true/>
 		</dict>
         <dict>
 			<key>cell</key>
