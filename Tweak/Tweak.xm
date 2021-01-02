@@ -22,6 +22,7 @@ BOOL enableControlCenterSection;
 	[lsArtworkBackgroundImageView setHidden:YES];
 	[lsArtworkBackgroundImageView setClipsToBounds:YES];
 	[lsArtworkBackgroundImageView setAlpha:[lockscreenArtworkOpacityValue doubleValue]];
+	if (![lsArtworkBackgroundImageView isDescendantOfView:[self view]]) [[self view] insertSubview:lsArtworkBackgroundImageView atIndex:0];
 
 	if ([lockscreenArtworkBlurMode intValue] != 0) {
 		if (!lsBlur) {
@@ -36,7 +37,7 @@ BOOL enableControlCenterSection;
 			[lsBlurView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
 			[lsBlurView setClipsToBounds:YES];
 			[lsBlurView setAlpha:[lockscreenArtworkBlurAmountValue doubleValue]];
-			[lsArtworkBackgroundImageView addSubview:lsBlurView];
+			if (![lsBlurView isDescendantOfView:lsArtworkBackgroundImageView]) [lsArtworkBackgroundImageView addSubview:lsBlurView];
 		}
 		[lsBlurView setHidden:NO];
 	}
@@ -49,13 +50,8 @@ BOOL enableControlCenterSection;
 		[lsDimView setBackgroundColor:[UIColor blackColor]];
 		[lsDimView setAlpha:[lockscreenArtworkDimValue doubleValue]];
 		[lsDimView setHidden:NO];
-
-		if (![lsDimView isDescendantOfView:lsArtworkBackgroundImageView])
-			[lsArtworkBackgroundImageView addSubview:lsDimView];
+		if (![lsDimView isDescendantOfView:lsArtworkBackgroundImageView]) [lsArtworkBackgroundImageView addSubview:lsDimView];
 	}
-
-	if (![lsArtworkBackgroundImageView isDescendantOfView:[self view]])
-		[[self view] insertSubview:lsArtworkBackgroundImageView atIndex:0];
 
 }
 
@@ -82,16 +78,15 @@ BOOL enableControlCenterSection;
 		else
 			[self setMaterialViewBackground];
 
-		if (!lspArtworkBackgroundImageView) {
-			lspArtworkBackgroundImageView = [[UIImageView alloc] init];
-			[lspArtworkBackgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
-			[lspArtworkBackgroundImageView setHidden:NO];
-			[lspArtworkBackgroundImageView setClipsToBounds:YES];
-		}
+		if (!lspArtworkBackgroundImageView) lspArtworkBackgroundImageView = [[UIImageView alloc] init];
 		[lspArtworkBackgroundImageView setFrame:[AdjunctItemView bounds]];
+		[lspArtworkBackgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
+		[lspArtworkBackgroundImageView setHidden:NO];
+		[lspArtworkBackgroundImageView setClipsToBounds:YES];
 		[lspArtworkBackgroundImageView setAlpha:[lockscreenPlayerArtworkOpacityValue doubleValue]];
 		[[lspArtworkBackgroundImageView layer] setCornerRadius:[lockscreenPlayerArtworkCornerRadiusValue doubleValue]];
 		[lspArtworkBackgroundImageView setImage:currentArtwork];
+		if (![lspArtworkBackgroundImageView isDescendantOfView:AdjunctItemView]) [AdjunctItemView insertSubview:lspArtworkBackgroundImageView atIndex:0];
 
 		if ([lockscreenPlayerArtworkBlurMode intValue] != 0) {
 			if (!lspBlur) {
@@ -106,7 +101,7 @@ BOOL enableControlCenterSection;
 				[lspBlurView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
 				[lspBlurView setClipsToBounds:YES];
 				[lspBlurView setAlpha:[lockscreenPlayerArtworkBlurAmountValue doubleValue]];
-				[lspArtworkBackgroundImageView addSubview:lspBlurView];
+				if (![lspBlurView isDescendantOfView:lspArtworkBackgroundImageView]) [lspArtworkBackgroundImageView addSubview:lspBlurView];
 			}
 			[lspBlurView setHidden:NO];
 		}
@@ -119,12 +114,10 @@ BOOL enableControlCenterSection;
 			[lspDimView setBackgroundColor:[UIColor blackColor]];
 			[lspDimView setAlpha:[lockscreenPlayerArtworkDimValue doubleValue]];
 			[lspDimView setHidden:NO];
-
-			if (![lspDimView isDescendantOfView:lspArtworkBackgroundImageView])
-				[lspArtworkBackgroundImageView addSubview:lspDimView];
+			if (![lspDimView isDescendantOfView:lspArtworkBackgroundImageView]) [lspArtworkBackgroundImageView addSubview:lspDimView];
 		}
-
-		if (![lspArtworkBackgroundImageView isDescendantOfView:AdjunctItemView]) [AdjunctItemView addSubview:lspArtworkBackgroundImageView];
+	} else {
+		return;
 	}
 }
 
@@ -169,19 +162,6 @@ BOOL enableControlCenterSection;
 
 %end
 
-%hook XENHWidgetLayerContainerView
-
-- (void)didMoveToWindow { // hide xen html widgets
-
-	%orig;
-
-	if (hideXenHTMLWidgetsSwitch && ([[%c(SBMediaController) sharedInstance] isPlaying] || [[%c(SBMediaController) sharedInstance] isPaused]))
-		[self setHidden:YES];
-
-}
-
-%end
-
 %end
 
 %group VioletHomescreen
@@ -200,6 +180,7 @@ BOOL enableControlCenterSection;
 	[hsArtworkBackgroundImageView setHidden:YES];
 	[hsArtworkBackgroundImageView setClipsToBounds:YES];
 	[hsArtworkBackgroundImageView setAlpha:[homescreenArtworkOpacityValue doubleValue]];
+	if (![hsArtworkBackgroundImageView isDescendantOfView:[self view]]) [[self view] insertSubview:hsArtworkBackgroundImageView atIndex:0];
 
 	if ([homescreenArtworkBlurMode intValue] != 0) {
 		if (!hsBlur) {
@@ -214,7 +195,7 @@ BOOL enableControlCenterSection;
 			[hsBlurView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
 			[hsBlurView setClipsToBounds:YES];
 			[hsBlurView setAlpha:[homescreenArtworkBlurAmountValue doubleValue]];
-			[hsArtworkBackgroundImageView addSubview:hsBlurView];
+			if (![hsBlurView isDescendantOfView:hsArtworkBackgroundImageView]) [hsArtworkBackgroundImageView addSubview:hsBlurView];
 		}
 		[hsBlurView setHidden:NO];
 	}
@@ -227,13 +208,8 @@ BOOL enableControlCenterSection;
 		[hsDimView setBackgroundColor:[UIColor blackColor]];
 		[hsDimView setAlpha:[homescreenArtworkDimValue doubleValue]];
 		[hsDimView setHidden:NO];
-
-		if (![hsDimView isDescendantOfView:hsArtworkBackgroundImageView])
-			[hsArtworkBackgroundImageView addSubview:hsDimView];
+		if (![hsDimView isDescendantOfView:hsArtworkBackgroundImageView]) [hsArtworkBackgroundImageView addSubview:hsDimView];
 	}
-
-	if (![hsArtworkBackgroundImageView isDescendantOfView:[self view]])
-		[[self view] insertSubview:hsArtworkBackgroundImageView atIndex:0];
 
 }
 
@@ -256,6 +232,7 @@ BOOL enableControlCenterSection;
 	[ccArtworkBackgroundImageView setHidden:NO];
 	[ccArtworkBackgroundImageView setClipsToBounds:YES];
 	[ccArtworkBackgroundImageView setAlpha:[controlCenterArtworkOpacityValue doubleValue]];
+	if (![ccArtworkBackgroundImageView isDescendantOfView:[self view]]) [[self view] insertSubview:ccArtworkBackgroundImageView atIndex:1];
 
 	if ([controlCenterArtworkBlurMode intValue] != 0) {
 		if (!ccBlur) {
@@ -270,7 +247,7 @@ BOOL enableControlCenterSection;
 			[ccBlurView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
 			[ccBlurView setClipsToBounds:YES];
 			[ccBlurView setAlpha:[controlCenterArtworkBlurAmountValue doubleValue]];
-			[ccArtworkBackgroundImageView addSubview:ccBlurView];
+			if (![ccBlurView isDescendantOfView:ccArtworkBackgroundImageView]) [ccArtworkBackgroundImageView addSubview:ccBlurView];
 		}
 		[ccBlurView setHidden:NO];
 	}
@@ -283,13 +260,8 @@ BOOL enableControlCenterSection;
 		[ccDimView setBackgroundColor:[UIColor blackColor]];
 		[ccDimView setAlpha:[controlCenterArtworkDimValue doubleValue]];
 		[ccDimView setHidden:NO];
-
-		if (![ccDimView isDescendantOfView:ccArtworkBackgroundImageView])
-			[ccArtworkBackgroundImageView addSubview:ccDimView];
+		if (![ccDimView isDescendantOfView:ccArtworkBackgroundImageView]) [ccArtworkBackgroundImageView addSubview:ccDimView];
 	}
-
-	if (![ccArtworkBackgroundImageView isDescendantOfView:[self view]])
-		[[self view] insertSubview:ccArtworkBackgroundImageView atIndex:1];
 
 }
 
@@ -319,6 +291,7 @@ BOOL enableControlCenterSection;
 	[[ccmArtworkBackgroundImageView layer] setCornerRadius:[[self moduleContentView] compactContinuousCornerRadius]];
 	[[ccmArtworkBackgroundImageView layer] setCornerCurve:kCACornerCurveContinuous];
 	[ccmArtworkBackgroundImageView setImage:currentArtwork];
+	if (![ccmArtworkBackgroundImageView isDescendantOfView:[self view]]) [[self view] insertSubview:ccmArtworkBackgroundImageView atIndex:0];
 
 	if ([controlCenterModuleArtworkBlurMode intValue] != 0) {
 		if (!ccmBlur) {
@@ -333,7 +306,7 @@ BOOL enableControlCenterSection;
 			[ccmBlurView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
 			[ccmBlurView setClipsToBounds:YES];
 			[ccmBlurView setAlpha:[controlCenterModuleArtworkBlurAmountValue doubleValue]];
-			[ccmArtworkBackgroundImageView addSubview:ccmBlurView];
+			if (![ccmBlurView isDescendantOfView:ccmArtworkBackgroundImageView]) [ccmArtworkBackgroundImageView addSubview:ccmBlurView];
 		}
 		[ccmBlurView setHidden:NO];
 	}
@@ -349,13 +322,8 @@ BOOL enableControlCenterSection;
 			[ccmDimView setHidden:NO];
 		else
 			[ccmDimView setHidden:YES];
-
-		if (![ccmDimView isDescendantOfView:ccmArtworkBackgroundImageView])
-			[ccmArtworkBackgroundImageView addSubview:ccmDimView];
+		if (![ccmDimView isDescendantOfView:ccmArtworkBackgroundImageView]) [ccmArtworkBackgroundImageView addSubview:ccmDimView];
 	}
-
-	if (![ccmArtworkBackgroundImageView isDescendantOfView:[self view]])
-		[[self view] insertSubview:ccmArtworkBackgroundImageView atIndex:0];
 
 }
 
@@ -506,7 +474,6 @@ BOOL enableControlCenterSection;
 		[preferences registerObject:&lockscreenPlayerArtworkDimValue default:@"0.0" forKey:@"lockscreenPlayerArtworkDim"];
 		[preferences registerBool:&lockscreenPlayerArtworkBackgroundTransitionSwitch default:NO forKey:@"lockscreenPlayerArtworkBackgroundTransition"];
 		[preferences registerBool:&hideLockscreenPlayerBackgroundSwitch default:NO forKey:@"hideLockscreenPlayerBackground"];
-		[preferences registerBool:&hideXenHTMLWidgetsSwitch default:NO forKey:@"hideXenHTMLWidgets"];
 	}
 
 	// Homescreen

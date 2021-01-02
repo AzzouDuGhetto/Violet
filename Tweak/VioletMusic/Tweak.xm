@@ -41,19 +41,20 @@ BOOL queueIsVisible = NO;
 	%orig;
 
 	if (musicArtworkBackgroundSwitch) {
-
 		for (UIView* subview in [[self view] subviews]) { // remove the background color of the controls view
 			[subview setBackgroundColor:[UIColor clearColor]];
 		}
 
 		[self setArtwork];
 
-		if (!musicArtworkBackgroundImageView) musicArtworkBackgroundImageView = [[UIImageView alloc] initWithFrame:[[self view] bounds]];
+		if (!musicArtworkBackgroundImageView) musicArtworkBackgroundImageView = [[UIImageView alloc] init];
+		[musicArtworkBackgroundImageView setFrame:[[self view] bounds]];
 		[musicArtworkBackgroundImageView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
 		[musicArtworkBackgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
 		[musicArtworkBackgroundImageView setHidden:NO];
 		[musicArtworkBackgroundImageView setClipsToBounds:YES];
 		[musicArtworkBackgroundImageView setAlpha:[musicArtworkOpacityValue doubleValue]];
+		if (![musicArtworkBackgroundImageView isDescendantOfView:[self view]]) [[self view] insertSubview:musicArtworkBackgroundImageView atIndex:0];
 
 		if ([musicArtworkBlurMode intValue] != 0) {
 			if (!musicBlur) {
@@ -68,7 +69,7 @@ BOOL queueIsVisible = NO;
 				[musicBlurView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
 				[musicBlurView setClipsToBounds:YES];
 				[musicBlurView setAlpha:[musicArtworkBlurAmountValue doubleValue]];
-				[musicArtworkBackgroundImageView addSubview:musicBlurView];
+				if (![musicBlurView isDescendantOfView:musicArtworkBackgroundImageView]) [musicArtworkBackgroundImageView addSubview:musicBlurView];
 			}
 			[musicBlurView setHidden:NO];
 		}
@@ -81,13 +82,8 @@ BOOL queueIsVisible = NO;
 			[musicDimView setBackgroundColor:[UIColor blackColor]];
 			[musicDimView setAlpha:[musicArtworkDimValue doubleValue]];
 			[musicDimView setHidden:NO];
-
-			if (![musicDimView isDescendantOfView:musicArtworkBackgroundImageView])
-				[musicArtworkBackgroundImageView addSubview:musicDimView];
+			if (![musicDimView isDescendantOfView:musicArtworkBackgroundImageView]) [musicArtworkBackgroundImageView addSubview:musicDimView];
 		}
-
-		if (![musicArtworkBackgroundImageView isDescendantOfView:[self view]])
-			[[self view] insertSubview:musicArtworkBackgroundImageView atIndex:0];
 
 		[[NSNotificationCenter defaultCenter] removeObserver:self];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setArtwork) name:(__bridge NSString *)kMRMediaRemoteNowPlayingInfoDidChangeNotification object:nil]; // add notification to dynamically change artwork
@@ -346,7 +342,8 @@ BOOL queueIsVisible = NO;
 	if (musicArtworkBackgroundSwitch) {
 		[self setArtwork];
 
-		if (!musicArtworkBackgroundImageView) musicArtworkBackgroundImageView = [[UIImageView alloc] initWithFrame:[[self view] bounds]];
+		if (!musicArtworkBackgroundImageView) musicArtworkBackgroundImageView = [[UIImageView alloc] init];
+		[musicArtworkBackgroundImageView setFrame:[[self view] bounds]];
 		[musicArtworkBackgroundImageView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
 		[musicArtworkBackgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
 		[musicArtworkBackgroundImageView setHidden:NO];
@@ -367,7 +364,7 @@ BOOL queueIsVisible = NO;
 				[musicBlurView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
 				[musicBlurView setClipsToBounds:YES];
 				[musicBlurView setAlpha:[musicArtworkBlurAmountValue doubleValue]];
-				[musicArtworkBackgroundImageView addSubview:musicBlurView];
+				if (![musicBlurView isDescendantOfView:musicArtworkBackgroundImageView]) [musicArtworkBackgroundImageView addSubview:musicBlurView];
 			}
 			[musicBlurView setHidden:NO];
 		}
@@ -380,9 +377,7 @@ BOOL queueIsVisible = NO;
 			[musicDimView setBackgroundColor:[UIColor blackColor]];
 			[musicDimView setAlpha:[musicArtworkDimValue doubleValue]];
 			[musicDimView setHidden:NO];
-
-			if (![musicDimView isDescendantOfView:musicArtworkBackgroundImageView])
-				[musicArtworkBackgroundImageView addSubview:musicDimView];
+			if (![musicDimView isDescendantOfView:musicArtworkBackgroundImageView]) [musicArtworkBackgroundImageView addSubview:musicDimView];
 		}
 
 		[[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -561,10 +556,11 @@ BOOL queueIsVisible = NO;
 	if (enabled) {
 		if (SYSTEM_VERSION_LESS_THAN(@"14")) {
 			if (enableMusicApplicationSection) %init(VioletMusic, QueueViewController=objc_getClass("MusicApplication.NowPlayingQueueViewController"), ArtworkView=objc_getClass("MusicApplication.NowPlayingContentView"), TimeControl=objc_getClass("MusicApplication.PlayerTimeControl"), ContextualActionsButton=objc_getClass("MusicApplication.ContextualActionsButton"), MusicLyricsBackgroundViewX=objc_getClass("MusicApplication.LyricsBackgroundView"));
+			return;
 		} else if (!SYSTEM_VERSION_LESS_THAN(@"14")) {
 			if (enableMusicApplicationSection) %init(VioletMusic14, QueueViewController=objc_getClass("MusicApplication.new_NowPlayingQueueViewController"), ArtworkView=objc_getClass("MusicApplication.NowPlayingContentView"), TimeControl=objc_getClass("MusicApplication.PlayerTimeControl"), ContextualActionsButton=objc_getClass("MusicApplication.SymbolButton"));
+			return;
 		}
-		return;
     }
 
 }

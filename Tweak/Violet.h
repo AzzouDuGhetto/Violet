@@ -48,7 +48,6 @@ NSString* lockscreenPlayerArtworkCornerRadiusValue = @"13.0";
 NSString* lockscreenPlayerArtworkDimValue = @"0.0";
 BOOL lockscreenPlayerArtworkBackgroundTransitionSwitch = NO;
 BOOL hideLockscreenPlayerBackgroundSwitch = NO;
-BOOL hideXenHTMLWidgetsSwitch = NO;
 
 // Homescreen
 BOOL homescreenArtworkBackgroundSwitch = NO;
@@ -82,6 +81,9 @@ BOOL controlCenterModuleArtworkBackgroundTransitionSwitch =  NO;
 - (void)clearMaterialViewBackground;
 @end
 
+@interface CSAdjunctItemView : UIView
+@end
+
 @interface MTMaterialView : UIView
 @end
 
@@ -111,9 +113,6 @@ BOOL controlCenterModuleArtworkBackgroundTransitionSwitch =  NO;
 @property(nonatomic, retain)UIViewController* contentViewController;
 @property(nonatomic, readonly)CCUIContentModuleContentContainerView* moduleContentView;
 - (NSString *)moduleIdentifier;
-@end
-
-@interface XENHWidgetLayerContainerView : UIView
 @end
 
 @interface SBMediaController : NSObject

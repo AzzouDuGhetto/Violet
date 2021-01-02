@@ -13,7 +13,9 @@ BOOL enableSpotifyApplicationSection;
 	
 	%orig;
 
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"Violet-setSpotifyArtwork" object:nil];
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"Violet-setSpotifyArtwork" object:nil];
+    });
 
 }
 
@@ -52,6 +54,7 @@ BOOL enableSpotifyApplicationSection;
 	[spotifyArtworkBackgroundImageView setHidden:NO];
 	[spotifyArtworkBackgroundImageView setClipsToBounds:YES];
 	[spotifyArtworkBackgroundImageView setAlpha:[spotifyArtworkOpacityValue doubleValue]];
+	if (![spotifyArtworkBackgroundImageView isDescendantOfView:[self view]]) [[self view] insertSubview:spotifyArtworkBackgroundImageView atIndex:0];
 
 	if ([spotifyArtworkBlurMode intValue] != 0) {
 		if (!spotifyBlur) {
@@ -66,7 +69,7 @@ BOOL enableSpotifyApplicationSection;
 			[spotifyBlurView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
 			[spotifyBlurView setClipsToBounds:YES];
 			[spotifyBlurView setAlpha:[spotifyArtworkBlurAmountValue doubleValue]];
-			[spotifyArtworkBackgroundImageView addSubview:spotifyBlurView];
+			if (![spotifyBlurView isDescendantOfView:spotifyArtworkBackgroundImageView]) [spotifyArtworkBackgroundImageView addSubview:spotifyBlurView];
 		}
 		[spotifyBlurView setHidden:NO];
 	}
@@ -79,13 +82,8 @@ BOOL enableSpotifyApplicationSection;
 		[spotifyDimView setBackgroundColor:[UIColor blackColor]];
 		[spotifyDimView setAlpha:[spotifyArtworkDimValue doubleValue]];
 		[spotifyDimView setHidden:NO];
-
-		if (![spotifyDimView isDescendantOfView:spotifyArtworkBackgroundImageView])
-			[spotifyArtworkBackgroundImageView addSubview:spotifyDimView];
+		if (![spotifyDimView isDescendantOfView:spotifyArtworkBackgroundImageView]) [spotifyArtworkBackgroundImageView addSubview:spotifyDimView];
 	}
-
-	if (![spotifyArtworkBackgroundImageView isDescendantOfView:[self view]])
-		[[self view] insertSubview:spotifyArtworkBackgroundImageView atIndex:0];
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setArtwork) name:@"Violet-setSpotifyArtwork" object:nil]; // add notification observer to dynamically change artwork
