@@ -519,6 +519,21 @@ BOOL queueIsVisible = NO;
 
 %end
 
+%hook _TtCC16MusicApplication23PaletteTabBarController23PaletteVisualEffectView
+
+- (void)didMoveToWindow { // rounded mini player corners
+
+	%orig;
+
+	if (roundedMiniPlayerCornersSwitch) {
+		[self setClipsToBounds:YES];
+		[[self layer] setCornerRadius:10];
+	}
+
+}
+
+%end
+
 %end
 
 %ctor {
@@ -552,6 +567,7 @@ BOOL queueIsVisible = NO;
 	[preferences registerBool:&hideQueueButtonSwitch default:NO forKey:@"musicHideQueueButton"];
 	[preferences registerBool:&hideQueueButtonSwitch default:NO forKey:@"musicHideQueueButton"];
 	[preferences registerBool:&hideQueueModeBadgeSwitch default:NO forKey:@"musicHideQueueModeBadge"];
+	[preferences registerBool:&roundedMiniPlayerCornersSwitch default:NO forKey:@"roundedMiniPlayerCorners"];
 
 	if (enabled) {
 		if (SYSTEM_VERSION_LESS_THAN(@"14")) {
