@@ -91,37 +91,37 @@ BOOL queueIsVisible = NO;
 
 	if (hideLyricsButtonSwitch) {
 		MPRouteButton* lyricsButton = MSHookIvar<MPRouteButton *>(self, "lyricsButton");
-		[lyricsButton removeFromSuperview];
+		[lyricsButton setHidden:YES];
 	}
 		
 	if (hideRouteButtonSwitch) {
 		MPRouteButton* routeButton = MSHookIvar<MPRouteButton *>(self, "routeButton");
-		[routeButton removeFromSuperview];
+		[routeButton setHidden:YES];
 	}
 
 	if (hideRouteLabelSwitch) {
 		UILabel* routeLabel = MSHookIvar<UILabel *>(self, "routeLabel");
-		[routeLabel removeFromSuperview];
+		[routeLabel setHidden:YES];
 	}
 
 	if (hideQueueButtonSwitch) {
 		MPRouteButton* queueButton = MSHookIvar<MPRouteButton *>(self, "queueButton");
-		[queueButton removeFromSuperview];
+		[queueButton setHidden:YES];
 	}
 
 	if (hideTitleLabelSwitch) {
 		UILabel* titleLabel = MSHookIvar<UILabel *>(self, "titleLabel");
-		[titleLabel removeFromSuperview];
+		[titleLabel setHidden:YES];
 	}
 	
 	if (hideSubtitleButtonSwitch) {
 		UIButton* subtitleButton = MSHookIvar<UIButton *>(self, "subtitleButton");
-		[subtitleButton removeFromSuperview];
+		[subtitleButton setHidden:YES];
 	}
 
 	if (hideGrabberViewSwitch) {
 		UIView* grabber = MSHookIvar<UIView *>(self, "grabberView");
-		[grabber removeFromSuperview];
+		[grabber setHidden:YES];
 	}
 
 	if (hideQueueModeBadgeSwitch) {
@@ -243,10 +243,10 @@ BOOL queueIsVisible = NO;
 		[knob setHidden:YES];
 
 	if (hideElapsedTimeLabelSwitch)
-		[elapsedLabel setHidden:YES];
+		[elapsedLabel removeFromSuperview];
 		
 	if (hideRemainingTimeLabelSwitch)
-		[remainingLabel setHidden:YES];
+		[remainingLabel removeFromSuperview];
 
 }
 
@@ -386,32 +386,32 @@ BOOL queueIsVisible = NO;
 	
 	if (hideLyricsButtonSwitch) {
 		MPRouteButton* lyricsButton = MSHookIvar<MPRouteButton *>(self, "lyricsButton");
-		[lyricsButton removeFromSuperview];
+		[lyricsButton setHidden:YES];
 	}
 		
 	if (hideRouteButtonSwitch) {
 		MPRouteButton* routeButton = MSHookIvar<MPRouteButton *>(self, "routeButton");
-		[routeButton removeFromSuperview];
+		[routeButton setHidden:YES];
 	}
 
 	if (hideRouteLabelSwitch) {
 		UILabel* routeLabel = MSHookIvar<UILabel *>(self, "routeLabel");
-		[routeLabel removeFromSuperview];
+		[routeLabel setHidden:YES];
 	}
 
 	if (hideQueueButtonSwitch) {
 		MPRouteButton* queueButton = MSHookIvar<MPRouteButton *>(self, "queueButton");
-		[queueButton removeFromSuperview];
+		[queueButton setHidden:YES];
 	}
 
 	if (hideTitleLabelSwitch) {
 		UILabel* titleLabel = MSHookIvar<UILabel *>(self, "titleLabel");
-		[titleLabel removeFromSuperview];
+		[titleLabel setHidden:YES];
 	}
 	
 	if (hideSubtitleButtonSwitch) {
 		UIButton* subtitleButton = MSHookIvar<UIButton *>(self, "subtitleButton");
-		[subtitleButton removeFromSuperview];
+		[subtitleButton setHidden:YES];
 	}
 
 	if (hideGrabberViewSwitch) {
@@ -513,21 +513,6 @@ BOOL queueIsVisible = NO;
 	if (hideVolumeSliderSwitch) {
 		[self setHidden:YES];
 		return;
-	}
-
-}
-
-%end
-
-%hook _TtCC16MusicApplication23PaletteTabBarController23PaletteVisualEffectView
-
-- (void)didMoveToWindow { // rounded mini player corners
-
-	%orig;
-
-	if (roundedMiniPlayerCornersSwitch) {
-		[self setClipsToBounds:YES];
-		[[self layer] setCornerRadius:10];
 	}
 
 }
