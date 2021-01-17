@@ -106,8 +106,7 @@ BOOL enableSpotifyApplicationSection;
 
 	%orig;
 
-	if (hideArtworkSwitch)
-		[self setHidden:YES];
+	[self setHidden:hideArtworkSwitch];
 
 }
 
@@ -119,8 +118,7 @@ BOOL enableSpotifyApplicationSection;
 
 	%orig;
 
-	if (hideNextTrackButtonSwitch)
-		[self setHidden:YES];
+	[self setHidden:hideNextTrackButtonSwitch];
 
 }
 
@@ -132,8 +130,7 @@ BOOL enableSpotifyApplicationSection;
 
 	%orig;
 
-	if (hidePreviousTrackButtonSwitch)
-		[self setHidden:YES];
+	[self setHidden:hidePreviousTrackButtonSwitch];
 
 }
 
@@ -145,8 +142,7 @@ BOOL enableSpotifyApplicationSection;
 
 	%orig;
 
-	if (hidePlayButtonSwitch)
-		[self setHidden:YES];
+	[self setHidden:hidePlayButtonSwitch];
 
 }
 
@@ -158,8 +154,7 @@ BOOL enableSpotifyApplicationSection;
 
 	%orig;
 
-	if (hideShuffleButtonSwitch)
-		[self setHidden:YES];
+	[self setHidden:hideShuffleButtonSwitch];
 
 }
 
@@ -171,8 +166,7 @@ BOOL enableSpotifyApplicationSection;
 
 	%orig;
 
-	if (hideRepeatButtonSwitch)
-		[self setHidden:YES];
+	[self setHidden:hideRepeatButtonSwitch];
 
 }
 
@@ -184,8 +178,7 @@ BOOL enableSpotifyApplicationSection;
 
 	%orig;
 
-	if (hideDevicesButtonSwitch)
-		[self setHidden:YES];
+	[self setHidden:hideDevicesButtonSwitch];
 
 }
 
@@ -197,8 +190,7 @@ BOOL enableSpotifyApplicationSection;
 
 	%orig;
 
-	if (hideDevicesButtonSwitch)
-		[self setHidden:YES];
+	[self setHidden:hideDevicesButtonSwitch];
 
 }
 
@@ -210,8 +202,7 @@ BOOL enableSpotifyApplicationSection;
 
 	%orig;
 
-	if (hideTimeSliderSwitch)
-		[self setHidden:YES];
+	[self setHidden:hideTimeSliderSwitch];
 
 }
 
@@ -243,8 +234,7 @@ BOOL enableSpotifyApplicationSection;
 
 	%orig;
 
-	if (hideLikeButtonSwitch)
-		[self setHidden:YES];
+	[self setHidden:hideLikeButtonSwitch];
 
 }
 
@@ -256,8 +246,7 @@ BOOL enableSpotifyApplicationSection;
 
 	%orig;
 
-	if (hideBackButtonSwitch)
-		[self setHidden:YES];
+	[self setHidden:hideBackButtonSwitch];
 
 }
 
@@ -269,8 +258,7 @@ BOOL enableSpotifyApplicationSection;
 
 	%orig;
 
-	if (hideContextButtonSwitch)
-		[self setHidden:YES];
+	[self setHidden:hideContextButtonSwitch];
 
 }
 
@@ -301,19 +289,6 @@ BOOL enableSpotifyApplicationSection;
 		UILabel* songTitle = MSHookIvar<UILabel *>(self, "_label");
 		[songTitle setHidden:YES];
 	}
-
-}
-
-%end
-
-%hook SPTCanvasNowPlayingContentLayerCellCollectionViewCell
-
-- (void)didMoveToWindow { // hide canvas
-
-	%orig;
-
-	if (hideCanvasSwitch)
-		[self setHidden:YES];
 
 }
 
@@ -350,7 +325,6 @@ BOOL enableSpotifyApplicationSection;
 	[preferences registerBool:&hideBackButtonSwitch default:NO forKey:@"spotifyHideBackButton"];
 	[preferences registerBool:&hideContextButtonSwitch default:NO forKey:@"spotifyHideContextButton"];
 	[preferences registerBool:&hidePlaylistTitleSwitch default:NO forKey:@"spotifyHidePlaylistTitle"];
-	[preferences registerBool:&hideCanvasSwitch default:NO forKey:@"spotifyHideCanvas"];
 
 	if (enabled) {
 		if (enableSpotifyApplicationSection) %init(VioletSpotify);

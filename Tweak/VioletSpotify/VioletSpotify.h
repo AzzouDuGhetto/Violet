@@ -36,7 +36,6 @@ BOOL hideLikeButtonSwitch = NO;
 BOOL hideBackButtonSwitch = NO;
 BOOL hideContextButtonSwitch = NO;
 BOOL hidePlaylistTitleSwitch = NO;
-BOOL hideCanvasSwitch = NO;
 
 @interface SPTNowPlayingViewController : UIViewController
 - (void)setArtwork;

@@ -131,6 +131,17 @@ BOOL queueIsVisible = NO;
 
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+
+	%orig;
+
+	if (hideQueueModeBadgeSwitch) {
+		UIView* queueModeBadgeView = MSHookIvar<UIView *>(self, "queueModeBadgeView");
+		[queueModeBadgeView removeFromSuperview];
+	}
+
+}
+
 - (void)viewDidLayoutSubviews { // hide controls view background color
 
 	%orig;
