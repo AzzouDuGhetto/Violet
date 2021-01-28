@@ -1,7 +1,6 @@
 #import <UIKit/UIKit.h>
-#import <Foundation/Foundation.h>
-#import <Cephei/HBPreferences.h>
 #import <MediaRemote/MediaRemote.h>
+#import <Cephei/HBPreferences.h>
 
 #define SYSTEM_VERSION_LESS_THAN(v) ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
 
