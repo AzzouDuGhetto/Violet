@@ -222,10 +222,7 @@ UIVisualEffectView* blurView;
 - (void)resetPreferences {
 
     HBPreferences* preferences = [[HBPreferences alloc] initWithIdentifier: @"love.litten.violetpreferences"];
-    for (NSString* key in [preferences dictionaryRepresentation]) {
-        [preferences removeObjectForKey:key];
-
-    }
+    [preferences removeAllObjects];
     
     [[self enableSwitch] setOn:NO animated: YES];
     [self respring];
@@ -250,12 +247,11 @@ UIVisualEffectView* blurView;
 
 - (void)respringUtil {
 
-    pid_t pid;
-    const char* args[] = {"killall", "backboardd", NULL};
+    NSTask* task = [[NSTask alloc] init];
+    [task setLaunchPath:@"/usr/bin/sbreload"];
+    [task launch];
 
     [HBRespringController respringAndReturnTo:[NSURL URLWithString:@"prefs:root=Violet"]];
-
-    posix_spawn(&pid, "/usr/bin/killall", NULL, NULL, (char *const *)args, NULL);
 
 }
 

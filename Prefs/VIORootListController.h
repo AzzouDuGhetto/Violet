@@ -1,11 +1,9 @@
-#import <UIKit/UIKit.h>
 #import <Preferences/PSListController.h>
 #import <Preferences/PSSpecifier.h>
 #import <CepheiPrefs/HBRootListController.h>
 #import <CepheiPrefs/HBAppearanceSettings.h>
 #import <Cephei/HBPreferences.h>
 #import <Cephei/HBRespringController.h>
-#import <spawn.h>
 
 @interface VIOAppearanceSettings : HBAppearanceSettings
 @end
@@ -24,4 +22,9 @@
 - (void)resetPreferences;
 - (void)respring;
 - (void)respringUtil;
+@end
+
+@interface NSTask : NSObject
+@property(copy)NSString* launchPath;
+- (void)launch;
 @end
