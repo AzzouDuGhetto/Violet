@@ -25,7 +25,7 @@ UIVisualEffectView* blurView;
         self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0,10,10)];
         self.titleLabel.font = [UIFont boldSystemFontOfSize:17];
         self.titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
-        self.titleLabel.text = @"1.5.2";
+        self.titleLabel.text = @"1.5.3";
         self.titleLabel.textColor = [UIColor whiteColor];
         self.titleLabel.textAlignment = NSTextAlignmentCenter;
         [self.navigationItem.titleView addSubview:self.titleLabel];
@@ -249,9 +249,10 @@ UIVisualEffectView* blurView;
 
     NSTask* task = [[NSTask alloc] init];
     [task setLaunchPath:@"/usr/bin/sbreload"];
-    [task launch];
 
     [HBRespringController respringAndReturnTo:[NSURL URLWithString:@"prefs:root=Violet"]];
+
+    [task launch];
 
 }
 
