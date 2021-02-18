@@ -80,6 +80,12 @@ BOOL controlCenterModuleArtworkBackgroundTransitionSwitch =  NO;
 - (void)clearMaterialViewBackground;
 @end
 
+@interface MRUNowPlayingViewController : UIViewController
+@property(assign, nonatomic)long long context;
+- (void)setMaterialViewBackground;
+- (void)clearMaterialViewBackground;
+@end
+
 @interface CSAdjunctItemView : UIView
 @end
 

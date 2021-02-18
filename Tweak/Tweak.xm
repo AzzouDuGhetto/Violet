@@ -119,6 +119,7 @@ BOOL enableControlCenterSection;
 	} else {
 		return;
 	}
+
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection { // fix for the MTView resetting when switching between light and dark mode
@@ -151,6 +152,100 @@ BOOL enableControlCenterSection;
 - (void)setMaterialViewBackground {
 
 	UIView* AdjunctItemView = [[[[[self view] superview] superview] superview] superview];
+
+	UIView* platterView = MSHookIvar<UIView *>(AdjunctItemView, "_platterView");
+	MTMaterialView* MTView = MSHookIvar<MTMaterialView *>(platterView, "_backgroundView");
+	MTMaterialLayer* MTLayer = (MTMaterialLayer *)[MTView layer];
+	[MTLayer setScale:1];
+	[MTLayer mt_setColorMatrixDrivenOpacity:1 removingIfIdentity:false];
+
+}
+
+%end
+
+%hook MRUNowPlayingViewController
+
+- (void)viewDidAppear:(BOOL)animated { // add artwork background view
+
+	%orig;
+
+	if ([self context] == 2) {
+		UIView* AdjunctItemView = [[[[[[self view] superview] superview] superview] superview] superview];
+
+		if (hideLockscreenPlayerBackgroundSwitch) {
+			UIView* platterView = MSHookIvar<UIView *>(AdjunctItemView, "_platterView");
+			[[platterView backgroundMaterialView] setHidden:YES];
+		}
+
+		if (!lockscreenPlayerArtworkBackgroundSwitch) return;
+		
+		if (currentArtwork)
+			[self clearMaterialViewBackground];
+		else
+			[self setMaterialViewBackground];
+
+		if (!lspArtworkBackgroundImageView) lspArtworkBackgroundImageView = [[UIImageView alloc] init];
+		[lspArtworkBackgroundImageView setFrame:[AdjunctItemView bounds]];
+		[lspArtworkBackgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
+		[lspArtworkBackgroundImageView setHidden:NO];
+		[lspArtworkBackgroundImageView setClipsToBounds:YES];
+		[lspArtworkBackgroundImageView setAlpha:[lockscreenPlayerArtworkOpacityValue doubleValue]];
+		[[lspArtworkBackgroundImageView layer] setCornerRadius:[lockscreenPlayerArtworkCornerRadiusValue doubleValue]];
+		[lspArtworkBackgroundImageView setImage:currentArtwork];
+		if (![lspArtworkBackgroundImageView isDescendantOfView:AdjunctItemView]) [AdjunctItemView insertSubview:lspArtworkBackgroundImageView atIndex:0];
+
+		if ([lockscreenPlayerArtworkBlurMode intValue] != 0) {
+			if (!lspBlur) {
+				if ([lockscreenPlayerArtworkBlurMode intValue] == 1)
+					lspBlur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+				else if ([lockscreenPlayerArtworkBlurMode intValue] == 2)
+					lspBlur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+				else if ([lockscreenPlayerArtworkBlurMode intValue] == 3)
+					lspBlur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleRegular];
+				lspBlurView = [[UIVisualEffectView alloc] initWithEffect:lspBlur];
+				[lspBlurView setFrame:[lspArtworkBackgroundImageView bounds]];
+				[lspBlurView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+				[lspBlurView setClipsToBounds:YES];
+				[lspBlurView setAlpha:[lockscreenPlayerArtworkBlurAmountValue doubleValue]];
+				if (![lspBlurView isDescendantOfView:lspArtworkBackgroundImageView]) [lspArtworkBackgroundImageView addSubview:lspBlurView];
+			}
+			[lspBlurView setHidden:NO];
+		}
+
+		if ([lockscreenPlayerArtworkDimValue doubleValue] != 0.0) {
+			if (!lspDimView) lspDimView = [[UIView alloc] init];
+			[lspDimView setFrame:[lspArtworkBackgroundImageView bounds]];
+			[lspDimView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+			[lspDimView setClipsToBounds:YES];
+			[lspDimView setBackgroundColor:[UIColor blackColor]];
+			[lspDimView setAlpha:[lockscreenPlayerArtworkDimValue doubleValue]];
+			[lspDimView setHidden:NO];
+			if (![lspDimView isDescendantOfView:lspArtworkBackgroundImageView]) [lspArtworkBackgroundImageView addSubview:lspDimView];
+		}
+	} else {
+		return;
+	}
+
+}
+
+%new
+- (void)clearMaterialViewBackground {
+
+	UIView* AdjunctItemView = [[[[[[self view] superview] superview] superview] superview] superview];
+
+	UIView* platterView = MSHookIvar<UIView *>(AdjunctItemView, "_platterView");
+	MTMaterialView* MTView = MSHookIvar<MTMaterialView *>(platterView, "_backgroundView");
+	MTMaterialLayer* MTLayer = (MTMaterialLayer *)[MTView layer];
+	[MTLayer setScale:0];
+	[MTLayer mt_setColorMatrixDrivenOpacity:0 removingIfIdentity:false];
+	[MTView setBackgroundColor:[UIColor clearColor]];
+
+}
+
+%new
+- (void)setMaterialViewBackground {
+
+	UIView* AdjunctItemView = [[[[[[self view] superview] superview] superview] superview] superview];
 
 	UIView* platterView = MSHookIvar<UIView *>(AdjunctItemView, "_platterView");
 	MTMaterialView* MTView = MSHookIvar<MTMaterialView *>(platterView, "_backgroundView");
