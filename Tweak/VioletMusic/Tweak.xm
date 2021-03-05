@@ -402,12 +402,12 @@ BOOL queueIsVisible = NO;
 		
 	if (hideRouteButtonSwitch) {
 		MPRouteButton* routeButton = MSHookIvar<MPRouteButton *>(self, "routeButton");
-		[routeButton setHidden:YES];
+		[routeButton removeFromSuperview];
 	}
 
 	if (hideRouteLabelSwitch) {
 		UILabel* routeLabel = MSHookIvar<UILabel *>(self, "routeLabel");
-		[routeLabel setHidden:YES];
+		[routeLabel removeFromSuperview];
 	}
 
 	if (hideQueueButtonSwitch) {
