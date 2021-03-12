@@ -85,6 +85,7 @@ BOOL enableControlCenterSection;
 		[lspArtworkBackgroundImageView setClipsToBounds:YES];
 		[lspArtworkBackgroundImageView setAlpha:[lockscreenPlayerArtworkOpacityValue doubleValue]];
 		[[lspArtworkBackgroundImageView layer] setCornerRadius:[lockscreenPlayerArtworkCornerRadiusValue doubleValue]];
+		[[lspArtworkBackgroundImageView layer] setCornerCurve:kCACornerCurveContinuous];
 		[lspArtworkBackgroundImageView setImage:currentArtwork];
 		if (![lspArtworkBackgroundImageView isDescendantOfView:AdjunctItemView]) [AdjunctItemView insertSubview:lspArtworkBackgroundImageView atIndex:0];
 
@@ -191,6 +192,7 @@ BOOL enableControlCenterSection;
 		[lspArtworkBackgroundImageView setClipsToBounds:YES];
 		[lspArtworkBackgroundImageView setAlpha:[lockscreenPlayerArtworkOpacityValue doubleValue]];
 		[[lspArtworkBackgroundImageView layer] setCornerRadius:[lockscreenPlayerArtworkCornerRadiusValue doubleValue]];
+		[[lspArtworkBackgroundImageView layer] setCornerCurve:kCACornerCurveContinuous];
 		[lspArtworkBackgroundImageView setImage:currentArtwork];
 		if (![lspArtworkBackgroundImageView isDescendantOfView:AdjunctItemView]) [AdjunctItemView insertSubview:lspArtworkBackgroundImageView atIndex:0];
 
